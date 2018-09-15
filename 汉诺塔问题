@@ -1,0 +1,17 @@
+#include<stdio.h>
+void han(int n, char x,char y,char z)
+{int i=0;
+if(n==1) printf("%c->%c\n",x,z);
+else
+{han(n-1,x,z,y);
+printf("%c->%c\n",x,z);i++;
+printf("%d",i);
+han(n-1,y,x,z);
+} 
+}
+main()
+{int count;
+ scanf("%d",&count);
+
+ han(count,'A','B','C');
+}
