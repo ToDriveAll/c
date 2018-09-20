@@ -1,0 +1,114 @@
+#include <stdio.h>//有bug 
+#include<stdlib.h>
+typedef struct stu{
+	int data;
+	struct stu *next;
+}st,*ST;
+int b[100],top=1;
+st *init_list()
+{
+	st *head;
+	head=(st *)malloc(sizeof(int));
+	head->next=NULL;
+	return head;
+}
+void freelist(ST head)
+{
+	ST p=head->next,q=p->next;
+	while(p)
+	{
+		free(p);
+		p=q;
+		q=q->next;
+		
+	}	
+ } 
+st *create(int n)
+{
+	st *head,*p,*r,*s;
+	int i;
+	head=init_list();
+	r=head;
+	for(i=1;i<=n;i++)
+	{
+		s=(st *)malloc(sizeof(int));
+		s->data=i;
+		s->next=r->next;
+		r->next=s;
+		r=s;
+	}
+	 r->next=head->next;//头尾相接 
+	return head;
+}
+void deal(int n,int m,st *head)
+{
+ int icount=1,count=0;	
+ st *p=head->next->next,*pre=head->next;
+ free(head);
+ if(m==1)
+ {
+ 	while(1)
+ 	{   count++;
+ 		b[top++]=pre->data;
+ 		if(count==n) break;
+ 		pre=pre->next;
+	 }
+	 return ;
+ }
+ else
+ { 
+ while(1)
+ {
+ 	icount++;
+	if(icount%m==0)
+	{   
+		pre->next=p->next;
+		b[top++]=p->data;
+		free(p);
+		p=pre->next;
+		count++;
+	}  
+ 	if(icount%m)
+ 	{
+ 	pre=pre->next;
+	p=p->next;	
+	}
+	if(count==n) break;
+ }
+ return ;	
+ }
+} 
+
+main()
+{
+	int n,k,j,a[100],count=1,i;
+	st *head[100];
+	scanf("%d %d",&n,&k);
+	//for(i=k;i>=1;i--)
+	//scanf("%d",&a[i]);
+	head[1]=create(n);
+	i=1;
+     while(1)//为什么会跳出去？ 
+	 { 	deal(n,i,head[i]);
+		for(j=1;j<=n;j++)
+		printf("%d ",b[j]);
+		 top=1;
+		 printf("\n");
+	//	freelist(head[i]);
+		head[i+1]=create(n);
+	    if(i==n) break;
+	    i++;
+     	printf("%d\n",i);
+	 }	
+  /*	for(i=1;i<=n;i++)
+	{   
+	
+		for(j=1;j<=k;j++)
+		{
+			if(a[j]==b[n--]) count++; 
+		}
+			if(count==k)  {printf("%d\n",i); break;} 
+			if(count!=k)  {count=0;	top=1;} 
+	}
+	*/
+}
